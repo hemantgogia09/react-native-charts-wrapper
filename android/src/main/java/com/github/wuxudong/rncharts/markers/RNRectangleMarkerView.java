@@ -2,9 +2,11 @@ package com.github.wuxudong.rncharts.markers;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import androidx.core.content.res.ResourcesCompat;
+import android.text.Html;
 import android.text.TextUtils;
 import android.widget.TextView;
+
+import androidx.core.content.res.ResourcesCompat;
 
 import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.components.MarkerView;
@@ -22,13 +24,13 @@ public class RNRectangleMarkerView extends MarkerView {
 
     private TextView tvContent;
 
-    private Drawable backgroundLeft = ResourcesCompat.getDrawable(getResources(), R.drawable.rectangle_marker_left, null);
-    private Drawable background = ResourcesCompat.getDrawable(getResources(), R.drawable.rectangle_marker, null);
-    private Drawable backgroundRight = ResourcesCompat.getDrawable(getResources(), R.drawable.rectangle_marker_right, null);
+    private Drawable backgroundLeft = ResourcesCompat.getDrawable(getResources(), R.drawable.rectangle_marker_left_rounded, null);
+    private Drawable background = ResourcesCompat.getDrawable(getResources(), R.drawable.rounded_rectangle_marker, null);
+    private Drawable backgroundRight = ResourcesCompat.getDrawable(getResources(), R.drawable.rectangle_marker_right_rounded, null);
 
-    private Drawable backgroundTopLeft = ResourcesCompat.getDrawable(getResources(), R.drawable.rectangle_marker_top_left, null);
-    private Drawable backgroundTop = ResourcesCompat.getDrawable(getResources(), R.drawable.rectangle_marker_top, null);
-    private Drawable backgroundTopRight = ResourcesCompat.getDrawable(getResources(), R.drawable.rectangle_marker_top_right, null);
+    private Drawable backgroundTopLeft = ResourcesCompat.getDrawable(getResources(), R.drawable.rectangle_marker_top_left_rounded, null);
+    private Drawable backgroundTop = ResourcesCompat.getDrawable(getResources(), R.drawable.rectangle_marker_top_rounded, null);
+    private Drawable backgroundTopRight = ResourcesCompat.getDrawable(getResources(), R.drawable.rectangle_marker_top_right_rounded, null);
 
     private int digits = 0;
 
@@ -69,7 +71,7 @@ public class RNRectangleMarkerView extends MarkerView {
         if (TextUtils.isEmpty(text)) {
             tvContent.setVisibility(INVISIBLE);
         } else {
-            tvContent.setText(text);
+            tvContent.setText(Html.fromHtml(text));
             tvContent.setVisibility(VISIBLE);
         }
 

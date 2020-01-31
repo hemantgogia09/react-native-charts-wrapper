@@ -1,5 +1,7 @@
 package com.github.wuxudong.rncharts.data;
 
+import android.graphics.Color;
+
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableType;
@@ -77,6 +79,10 @@ public class BarDataExtract extends DataExtract<BarData, BarEntry> {
         if (BridgeUtils.validate(config, ReadableType.Array, "stackLabels")) {
             barDataSet.setStackLabels(BridgeUtils.convertToStringArray(config.getArray("stackLabels")));
         }
+
+        barDataSet.setBarBorderWidth(1);
+        barDataSet.setBarBorderColor(Color.parseColor("#ec008c"));
+
     }
 
     @Override
