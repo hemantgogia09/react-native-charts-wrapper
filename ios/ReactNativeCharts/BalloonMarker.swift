@@ -29,7 +29,7 @@ open class BalloonMarker: MarkerView {
     fileprivate var insets = UIEdgeInsets(top: 8.0,left: 8.0,bottom: 20.0,right: 8.0)
     fileprivate var topInsets = UIEdgeInsets(top: 20.0,left: 8.0,bottom: 8.0,right: 8.0)
     
-    fileprivate var labelns: NSString?
+    fileprivate var labelns: NSAttributedString?
     fileprivate var _labelSize: CGSize = CGSize()
     fileprivate var _size: CGSize = CGSize()
     fileprivate var _paragraphStyle: NSMutableParagraphStyle?
@@ -135,6 +135,12 @@ open class BalloonMarker: MarkerView {
         context.addLine(to: CGPoint(x: rect.origin.x  + rect.size.width - arrowSize.width / 2.0, y: rect.origin.y + rect.size.height - arrowSize.height))
         context.addLine(to: CGPoint(x: rect.origin.x, y: rect.origin.y + rect.size.height - arrowSize.height))
         context.addLine(to: CGPoint(x: rect.origin.x, y: rect.origin.y))
+//        let clipPath: CGPath = UIBezierPath(roundedRect: rect, cornerRadius: 10.0).cgPath
+//        let path = UIBezierPath(roundedRect: rect,
+//                                byRoundingCorners: .topLeft,
+//        cornerRadii: CGSize(width: 10, height: 10))
+//
+//        context.addPath(path.cgPath)
         context.fillPath()
 
     }
@@ -194,7 +200,9 @@ open class BalloonMarker: MarkerView {
 
         UIGraphicsPushContext(context)
 
-        labelns?.draw(in: rect, withAttributes: _drawAttributes)
+        
+        labelns?.draw(in: rect)
+//        labelns?.draw(in: rect, withAttributes: _drawAttributes,context: context)
 
         UIGraphicsPopContext()
 
@@ -206,35 +214,51 @@ open class BalloonMarker: MarkerView {
         var label : String;
 
         if let candleEntry = entry as? CandleChartDataEntry {
-
             label = candleEntry.close.description
         } else {
             label = entry.y.description
         }
-
+        
+//        NSLog("------>>>>>>>")
+//        NSLog(label);
+//        NSLog("------>>>>>>>")
+        
         if let object = entry.data as? JSON {
             if object["marker"].exists() {
                 label = object["marker"].stringValue;
-              
+                
                 if highlight.stackIndex != -1 && object["marker"].array != nil {
                     label = object["marker"].arrayValue[highlight.stackIndex].stringValue
                 }
             }
         }
 
-        labelns = label as NSString
-
+        labelns = label.htmlToAttributedString
+        
         _drawAttributes.removeAll()
         _drawAttributes[NSAttributedString.Key.font] = self.font
         _drawAttributes[NSAttributedString.Key.paragraphStyle] = _paragraphStyle
         _drawAttributes[NSAttributedString.Key.foregroundColor] = self.textColor
 
-        _labelSize = labelns?.size(withAttributes: _drawAttributes) ?? CGSize.zero
+        _labelSize = labelns?.size() ?? CGSize.zero
         _size.width = _labelSize.width + self.insets.left + self.insets.right
-        _size.height = _labelSize.height + self.insets.top + self.insets.bottom
+        _size.height = _labelSize.height + self.insets.top + 5
         _size.width = max(minimumSize.width, _size.width)
         _size.height = max(minimumSize.height, _size.height)
 
     }
 }
 
+extension String {
+    var htmlToAttributedString: NSAttributedString? {
+        guard let data = data(using: .utf8) else { return NSAttributedString() }
+        do {
+            return try NSAttributedString(data: data, options: [.documentType: NSAttributedString.DocumentType.html, .characterEncoding:String.Encoding.utf8.rawValue], documentAttributes: nil)
+        } catch {
+            return NSAttributedString()
+        }
+    }
+    var htmlToString: String {
+        return htmlToAttributedString?.string ?? ""
+    }
+}

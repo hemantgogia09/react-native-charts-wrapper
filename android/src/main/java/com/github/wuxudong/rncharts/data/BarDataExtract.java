@@ -80,8 +80,8 @@ public class BarDataExtract extends DataExtract<BarData, BarEntry> {
             barDataSet.setStackLabels(BridgeUtils.convertToStringArray(config.getArray("stackLabels")));
         }
 
-        barDataSet.setBarBorderWidth(1);
-        barDataSet.setBarBorderColor(Color.parseColor("#ec008c"));
+        // barDataSet.setBarBorderWidth(1);
+        // barDataSet.setBarBorderColor(Color.parseColor("#ec008c"));
 
     }
 
