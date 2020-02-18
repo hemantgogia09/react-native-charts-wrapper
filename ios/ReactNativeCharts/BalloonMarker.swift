@@ -234,6 +234,7 @@ open class BalloonMarker: MarkerView {
         }
 
         labelns = label.htmlToAttributedString
+        labelns?.replaceFonts(with: self.font!)
         
         _drawAttributes.removeAll()
         _drawAttributes[NSAttributedString.Key.font] = self.font
@@ -260,5 +261,29 @@ extension String {
     }
     var htmlToString: String {
         return htmlToAttributedString?.string ?? ""
+    }
+}
+
+
+extension NSMutableAttributedString {
+
+    /// Replace any font with the specified font (including its pointSize) while still keeping
+    /// all other attributes like bold, italics, spacing, etc.
+    /// See https://stackoverflow.com/questions/19921972/parsing-html-into-nsattributedtext-how-to-set-font
+    func replaceFonts(with font: UIFont) {
+        let baseFontDescriptor = font.fontDescriptor
+        var changes = [NSRange: UIFont]()
+        
+        enumerateAttribute(.font, in: NSMakeRange(0, length), options: []) { foundFont, range, _ in
+            if let htmlTraits = (foundFont as? UIFont)?.fontDescriptor.symbolicTraits,
+                let adjustedDescriptor = baseFontDescriptor.withSymbolicTraits(htmlTraits) {
+                let newFont = UIFont(descriptor: adjustedDescriptor, size: font.pointSize)
+                changes[range] = newFont
+            }
+        }
+        changes.forEach { range, newFont in
+            removeAttribute(.font, range: range)
+            addAttribute(.font, value: newFont, range: range)
+        }
     }
 }
