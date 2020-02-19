@@ -29,7 +29,7 @@ open class BalloonMarker: MarkerView {
     fileprivate var insets = UIEdgeInsets(top: 8.0,left: 8.0,bottom: 20.0,right: 8.0)
     fileprivate var topInsets = UIEdgeInsets(top: 20.0,left: 8.0,bottom: 8.0,right: 8.0)
     
-    fileprivate var labelns: NSAttributedString?
+    fileprivate var labelns: NSMutableAttributedString?
     fileprivate var _labelSize: CGSize = CGSize()
     fileprivate var _size: CGSize = CGSize()
     fileprivate var _paragraphStyle: NSMutableParagraphStyle?
@@ -251,12 +251,12 @@ open class BalloonMarker: MarkerView {
 }
 
 extension String {
-    var htmlToAttributedString: NSAttributedString? {
-        guard let data = data(using: .utf8) else { return NSAttributedString() }
+    var htmlToAttributedString: NSMutableAttributedString? {
+        guard let data = data(using: .utf8) else { return NSMutableAttributedString() }
         do {
-            return try NSAttributedString(data: data, options: [.documentType: NSAttributedString.DocumentType.html, .characterEncoding:String.Encoding.utf8.rawValue], documentAttributes: nil)
+            return try NSMutableAttributedString(data: data, options: [.documentType: NSAttributedString.DocumentType.html, .characterEncoding:String.Encoding.utf8.rawValue], documentAttributes: nil)
         } catch {
-            return NSAttributedString()
+            return NSMutableAttributedString()
         }
     }
     var htmlToString: String {
