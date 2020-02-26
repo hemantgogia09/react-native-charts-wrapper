@@ -1,5 +1,16 @@
 package com.github.wuxudong.rncharts.charts;
 
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
+import android.text.style.StyleSpan;
+import android.util.Log;
+
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableType;
 import com.facebook.react.uimanager.ThemedReactContext;
@@ -50,6 +61,23 @@ public class PieChartManager extends ChartBaseManager<PieChart, PieEntry> {
     @ReactProp(name = "styledCenterText")
     public void setStyledCenterText(PieChart chart, ReadableMap propMap) {
         if (BridgeUtils.validate(propMap, ReadableType.String, "text")) {
+            String text = propMap.getString("text");
+
+            if (text.isEmpty()) {
+                chart.setCenterText(propMap.getString("text"));
+            } else {
+                int index = text.indexOf("\n");
+
+                SpannableString spannableString = new SpannableString(text);
+                spannableString.setSpan(new RelativeSizeSpan(2.75f), 0, index, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                spannableString.setSpan(new ForegroundColorSpan(Color.parseColor("#666666")),
+                        0, index, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, index, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                chart.setCenterText(spannableString);
+                chart.setCenterTextOffset(0,-30);
+            }
+
             chart.setCenterText(propMap.getString("text"));
         } else {
             chart.setCenterText("");

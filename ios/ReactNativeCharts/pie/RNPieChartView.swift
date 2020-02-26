@@ -75,16 +75,49 @@ class RNPieChartView: RNChartViewBase {
 
             let fontSize = json["size"].float != nil ? CGFloat(json["size"].floatValue) : CGFloat(12)
 
-            attrString = NSMutableAttributedString(string: json["text"].stringValue)
-            attrString?.setAttributes([
-                NSAttributedString.Key.foregroundColor: color!,
-                NSAttributedString.Key.font: NSUIFont.systemFont(ofSize: fontSize),
-                NSAttributedString.Key.paragraphStyle: paragraphStyle
-                ], range: NSMakeRange(0, attrString!.length))
+            let textValue = json["text"].stringValue
+            
+            if(textValue.isEmpty){
+                attrString = NSMutableAttributedString(string: textValue)
+                attrString?.setAttributes([
+                    NSAttributedString.Key.foregroundColor: color!,
+                    NSAttributedString.Key.font: NSUIFont.systemFont(ofSize: fontSize),
+                    NSAttributedString.Key.paragraphStyle: paragraphStyle
+                    ], range: NSMakeRange(0, attrString!.length))
+            }else{
+                let data = textValue.split(separator: "\n")
+                
+                print("Data ---->", data[0])
+                attrString = NSMutableAttributedString(string: String(data[0]))
+                if #available(iOS 8.2, *) {
+                    attrString?.setAttributes([
+                        NSAttributedString.Key.foregroundColor: color!,
+                        NSAttributedString.Key.font: NSUIFont.systemFont(ofSize: 30,weight: .bold),
+                        NSAttributedString.Key.paragraphStyle: paragraphStyle
+                    ], range: NSMakeRange(0, attrString!.length))
+                } else {
+                    // Fallback on earlier versions
+                }
+                
+                let devider = NSMutableAttributedString(string: "\n")
+                attrString?.append(devider)
+                
+                let normalString = NSMutableAttributedString(string: String(data[1]))
+                normalString.setAttributes([
+                    NSAttributedString.Key.foregroundColor: color!,
+                    NSAttributedString.Key.font: NSUIFont.systemFont(ofSize: fontSize),
+                    NSAttributedString.Key.paragraphStyle: paragraphStyle
+                ], range: NSMakeRange(0, normalString.length))
+                
+                attrString?.append(normalString)
+                
+            }
+            
         }
 
         chart.centerAttributedText = attrString
-
+        
+        chart.centerTextOffset = CGPoint(x:0,y:-30)
     }
 
     func setCenterTextRadiusPercent(_ radiusPercent: NSNumber) {
