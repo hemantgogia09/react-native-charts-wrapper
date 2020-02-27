@@ -20,6 +20,7 @@ public class BarChartManager extends BarLineChartBaseManager<BarChart, BarEntry>
     protected BarChart createViewInstance(ThemedReactContext reactContext) {
         BarChart barChart = new BarChart(reactContext);
         barChart.getAxisRight().setEnabled(false);
+        barChart.getAxisLeft().setAxisMinimum(0f);
         barChart.setOnChartValueSelectedListener(new RNOnChartValueSelectedListener(barChart));
         barChart.setOnChartGestureListener(new RNOnChartGestureListener(barChart));
         return barChart;
