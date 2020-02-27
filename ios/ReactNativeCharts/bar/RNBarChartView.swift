@@ -26,6 +26,8 @@ class RNBarChartView: RNBarChartViewBase {
         super.init(frame: frame)
 
         self._chart.delegate = self
+        _chart.rightAxis.enabled=false
+        _chart.leftAxis.axisMinimum = 0.0
         self.addSubview(_chart)
     }
 
