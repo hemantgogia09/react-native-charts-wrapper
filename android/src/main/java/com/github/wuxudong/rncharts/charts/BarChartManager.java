@@ -21,6 +21,9 @@ public class BarChartManager extends BarLineChartBaseManager<BarChart, BarEntry>
         BarChart barChart = new BarChart(reactContext);
         barChart.getAxisRight().setEnabled(false);
         barChart.getAxisLeft().setAxisMinimum(0f);
+        barChart.getAxisLeft().setGridColor(Color.parseColor("#E5E5E5"));
+        barChart.getAxisLeft().setZeroLineColor(Color.GRAY);
+        barChart.getAxisLeft().setDrawZeroLine(true);
         barChart.setOnChartValueSelectedListener(new RNOnChartValueSelectedListener(barChart));
         barChart.setOnChartGestureListener(new RNOnChartGestureListener(barChart));
         return barChart;
