@@ -243,7 +243,7 @@ open class BalloonMarker: MarkerView {
 
         _labelSize = labelns?.size() ?? CGSize.zero
         _size.width = _labelSize.width + self.insets.left + self.insets.right
-        _size.height = _labelSize.height + self.insets.top - 5
+        _size.height = _labelSize.height < 50 ? _labelSize.height + self.insets.top + 10 : (_labelSize.height + self.insets.top - 5)
         _size.width = max(minimumSize.width, _size.width)
         _size.height = max(minimumSize.height, _size.height)
 
