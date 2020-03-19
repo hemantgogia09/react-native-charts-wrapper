@@ -1,5 +1,6 @@
 package com.github.wuxudong.rncharts.charts;
 
+import android.graphics.Color;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.annotations.ReactProp;
 import com.github.mikephil.charting.charts.BarChart;
