@@ -211,6 +211,10 @@ open class BalloonMarker: MarkerView {
 
     open override func refreshContent(entry: ChartDataEntry, highlight: Highlight) {
 
+        let state = UIApplication.shared.applicationState
+        if state == .background || state == .inactive {
+            return
+        }
         var label : String;
 
         if let candleEntry = entry as? CandleChartDataEntry {
