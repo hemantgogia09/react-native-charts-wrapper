@@ -29,6 +29,11 @@ class RNBubbleChartView: RNBarLineChartViewBase {
         self.addSubview(_chart)
 
     }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        _chart.frame = self.bounds // Adjust the chart's frame to fill the entire component's bounds
+    }
 
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
